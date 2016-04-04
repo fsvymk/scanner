@@ -28,7 +28,9 @@ int main() {
     int szStr = strlen(command);
     int status = 0; // not connected
 
-    for (i=0; i<R; i++){
+    //for (i=0; i<R; i++){
+
+    while(1==1)
 
         int fd = open("/dev/usbtmc0", O_RDWR);
         if(fd!=-1){
