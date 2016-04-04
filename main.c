@@ -17,26 +17,35 @@ int main() {
         buf[i] = 0;
     }
 
+    int R = 2000;
     printf("Scanner. Select Parameter:\n");
-    printf("READ? 10 times.\n");
+    printf("READ? %d times.\n",R);
 
     char *command[50];
     char cmd[] = "READ?";
 
-    int R = 10; // R - Range
+    // R - Range
     int szStr = strlen(command);
+    int status = 0; // not connected
 
     for (i=0; i<R; i++){
 
         int fd = open("/dev/usbtmc0", O_RDWR);
-
-
-        write(fd, cmd,  szStr);
-        write(fd, '\n', 1);
-
-        ssize_t size = read(fd, &buf, 32);
-        printf("> %s \n", buf);
-
+        if(fd!=-1){
+            write(fd, cmd,  szStr);
+            write(fd, '\n', 1);
+            ssize_t size = read(fd, &buf, 32);
+            printf("> %s \n", buf);
+        }else
+        {
+            if(status!=fd){
+                status =fd;
+                printf("Disconnected.\n");
+            }
+            else{
+                printf(".");
+            }
+        }
         close(fd);
     }
     return 0;
